@@ -1,18 +1,12 @@
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
 void processUserData(char* input) {
-    // SECURITY RISK: Buffer overflow vulnerability
     char buffer[50];
-    strcpy(buffer, input);
+    strncpy(buffer, input, 49);
+    buffer[49] = '\0';
     printf("Processing: %s\n", buffer);
 }
 
 int calculateTotal(int items) {
-    // LOGIC ERROR: Uninitialized variable
-    int total;
+    int total = 0;
     for(int i = 0; i < items; i++) {
         total += i;
     }
@@ -20,14 +14,9 @@ int calculateTotal(int items) {
 }
 
 int main() {
-    // DEFAULT BUG: Memory leak because it's not freed
     char* dynamic_string = malloc(100 * sizeof(char));
-    
-    // Unused variable
-    int unused_counter = 42;
-    
     processUserData("This is a very long string that might just overflow the 50 character buffer we allocated above!");
     printf("Total: %d\n", calculateTotal(10));
-    
+    free(dynamic_string);
     return 0;
 }
